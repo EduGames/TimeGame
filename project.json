@@ -12,6 +12,9 @@
 
     "jsList" : [
         "src/resource.js",
-        "src/app.js"
+        "src/app.js",
+        "src/scenes/mainScene.js",
+        "src/objects/analogClock.js",
+        "src/helpers/timeConverter.js"
     ]
 }
