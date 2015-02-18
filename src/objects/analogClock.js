@@ -21,6 +21,10 @@ var analogClock = cc.Sprite.extend({
         
         cc.eventManager.addListener(this.touchHandler(), this.hourTick);
         cc.eventManager.addListener(this.touchHandler(), this.minuteTick);
+        
+        var draw = cc.DrawNode.create();
+        this.addChild( draw, 10 );
+        draw.drawCircle(cc.p(0,0), 10, 360, 20, false, 2, cc.color(59, 67, 255, 255));
     },
     setHour: function(hour){
         this.hour = hour;
@@ -41,6 +45,7 @@ var analogClock = cc.Sprite.extend({
     },
     touchHandler: function(){
         var that = this;
+        var clicked = false;
         return cc.EventListener.create({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             onTouchBegan: function (touch, event) {
@@ -53,16 +58,44 @@ var analogClock = cc.Sprite.extend({
                 var rect = cc.rect(0, 0, s.width, s.height);
 
                 //Check the click area
+                //TODO: Refactor !!
                 if (cc.rectContainsPoint(rect, locationInNode)) {
-                    if(target.getName() === "minuteTick"){
-                        that.setMinute(that.minute + 1);
-                    }else if(target.getName() === "hourTick"){
-                        that.setHour(that.hour + 1);
-                    }
+                    clicked = true;
                     return true;
                 }
                 return false;
+            },
+            onTouchMoved: function(touch, event) {
+                if(!clicked) return;
+                var target = event.getCurrentTarget();
+                
+                var arrow = mm.Point.diff(that.getPosition(), touch.getLocation());
+                var angle = mm.Point.angle(arrow);
+                
+                // TODO: Refactor !!
+                if(target.getName() === "minuteTick"){
+                    that.setMinute(timeConverter.degToMinutes(angle));
+                }else if(target.getName() === "hourTick"){
+                    that.setHour(timeConverter.degToHours(angle));
+                }
             }
         });
     }
 });
+
+mm = {
+    Point: {
+        diff: function(to, from){
+            return {x:from.x - to.x, y:from.y -to.y};
+        },
+        normalize: function(point){
+            var u = Math.sqrt( (point.x * point.x) + (point.y * point.y) );
+            return {x:point.x/u, y:point.y/u};
+        },
+        angle: function(point){
+            var angle = Math.atan2(point.x,point.y) * 180 / Math.PI;
+            if ( angle < 0 ) angle += 360;
+            return angle;
+        }
+    }
+};
