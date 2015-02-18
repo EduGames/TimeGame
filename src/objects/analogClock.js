@@ -1,30 +1,35 @@
 var analogClock = cc.Sprite.extend({
-    minuteTick: null,
-    hourTick: null,
+    minuteTickCreate: function(that){
+        var sprite = cc.Sprite.create(res.minuteTick);
+        sprite.setAnchorPoint(new cc.Point(0.5,0));
+        sprite.updateTimeOnAngle = function(angle){
+            that.setMinute(timeConverter.degToMinutes(angle));
+        }
+        cc.eventManager.addListener(this.touchHandler(), sprite);
+        that.minuteTick = sprite;
+        return sprite;
+    },
+    hourTickCreate: function(that){
+        var sprite = cc.Sprite.create(res.hourTick);
+        sprite.setAnchorPoint(new cc.Point(0.5,0));
+        sprite.updateTimeOnAngle = function(angle){
+            that.setHour(timeConverter.degToHours(angle));
+        }
+        cc.eventManager.addListener(this.touchHandler(), sprite);
+        that.hourTick = sprite
+        return sprite;
+    },
     hour: null,
     minute: null,
+    hourTick: null,
+    minuteTick: null,
     ctor: function(){
         this._super();
-        
         var clockFrame = cc.Sprite.create(res.clock);
         this.addChild(clockFrame, 0);
         
-        this.minuteTick = cc.Sprite.create(res.minuteTick);
-        this.minuteTick.setName("minuteTick");
-        this.minuteTick.setAnchorPoint(new cc.Point(0.5,0));
-        this.addChild(this.minuteTick, 0);
-        
-        this.hourTick = cc.Sprite.create(res.hourTick);
-        this.hourTick.setName("hourTick");
-        this.hourTick.setAnchorPoint(new cc.Point(0.5,0));
-        this.addChild(this.hourTick, 0);
-        
-        cc.eventManager.addListener(this.touchHandler(), this.hourTick);
-        cc.eventManager.addListener(this.touchHandler(), this.minuteTick);
-        
-        var draw = cc.DrawNode.create();
-        this.addChild( draw, 10 );
-        draw.drawCircle(cc.p(0,0), 10, 360, 20, false, 2, cc.color(59, 67, 255, 255));
+        this.addChild(this.minuteTickCreate(this), 0);
+        this.addChild(this.hourTickCreate(this), 0);
     },
     setHour: function(hour){
         this.hour = hour;
@@ -58,7 +63,6 @@ var analogClock = cc.Sprite.extend({
                 var rect = cc.rect(0, 0, s.width, s.height);
 
                 //Check the click area
-                //TODO: Refactor !!
                 if (cc.rectContainsPoint(rect, locationInNode)) {
                     clicked = true;
                     return true;
@@ -71,31 +75,9 @@ var analogClock = cc.Sprite.extend({
                 
                 var arrow = mm.Point.diff(that.getPosition(), touch.getLocation());
                 var angle = mm.Point.angle(arrow);
-                
-                // TODO: Refactor !!
-                if(target.getName() === "minuteTick"){
-                    that.setMinute(timeConverter.degToMinutes(angle));
-                }else if(target.getName() === "hourTick"){
-                    that.setHour(timeConverter.degToHours(angle));
-                }
+               
+                target.updateTimeOnAngle(angle);
             }
         });
     }
 });
-
-mm = {
-    Point: {
-        diff: function(to, from){
-            return {x:from.x - to.x, y:from.y -to.y};
-        },
-        normalize: function(point){
-            var u = Math.sqrt( (point.x * point.x) + (point.y * point.y) );
-            return {x:point.x/u, y:point.y/u};
-        },
-        angle: function(point){
-            var angle = Math.atan2(point.x,point.y) * 180 / Math.PI;
-            if ( angle < 0 ) angle += 360;
-            return angle;
-        }
-    }
-};
