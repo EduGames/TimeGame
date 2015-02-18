@@ -13,9 +13,7 @@ var mainLayer = cc.Layer.extend({
         clock.y = size.height/2
         clock.scale = 0.5
         
-        var now = new Date();
-        clock.setMinute(now.getMinutes());
-        clock.setHour(now.getHours());
+        clock.setTime(new Date());
         this.addChild(clock);
         
         return true;
