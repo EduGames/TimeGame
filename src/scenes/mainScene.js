@@ -1,6 +1,7 @@
 
 var mainLayer = cc.Layer.extend({
-    sprite:null,
+    clockA:null,
+    clockD:null,
     ctor:function () {
         //////////////////////////////
         // 1. super init first
@@ -13,19 +14,19 @@ var mainLayer = cc.Layer.extend({
         bg.y = size.height/2;
         this.addChild(bg, -10);
         
-        var clock = new analogClock();
-        clock.x = size.width/2 - 0;
-        clock.y = size.height/2 + 120;
-        clock.scale = 0.5;
-        clock.setTime(new Date());
-        this.addChild(clock);
+        this.clockA = new analogClock();
+        this.clockA.x = size.width/2 - 0;
+        this.clockA.y = size.height/2 + 120;
+        this.clockA.scale = 0.5;
+        this.clockA.setTime(new Date());
+        this.addChild(this.clockA);
         
-        var clockD = new digitalClock();
-        clockD.x = 170;
-        clockD.y = 520;
+        this.clockD = new digitalClock();
+        this.clockD.x = 170;
+        this.clockD.y = 520;
         
-        clockD.setTime(new Date());
-        this.addChild(clockD);
+        this.clockD.setTime(new Date());
+        this.addChild(this.clockD);
         var that = this;
         
         var analogClockBtn = new cc.MenuItemImage(
@@ -47,10 +48,15 @@ var mainLayer = cc.Layer.extend({
         menu.y = 0;
         this.addChild(menu, 1);
         
+        this.scheduleUpdate();
         return true;
     },
     goToGame: function(game){
         cc.director.runScene(new game());
+    },
+    update: function(dt){
+        this.clockA.setTime(new Date());
+        this.clockD.setTime(new Date());
     }
 });
 
