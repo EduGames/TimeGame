@@ -4,6 +4,7 @@ var digitalClock = cc.Sprite.extend({
     minuteBOne: null,
     minuteBTwo: null,
     createBoard: function( position){
+        var that = this;
         var drawBGNode = cc.DrawNode.create();
         drawBGNode.clear();
         drawBGNode.drawRect(cc.p(0,0), cc.p(30,40), cc.color.WHITE );
@@ -17,10 +18,16 @@ var digitalClock = cc.Sprite.extend({
         drawBGNode.addChild(label);
         drawBGNode.originalPosition = position;
         
-        cc.eventManager.addListener(this.touchHandler(), drawBGNode);
         return {
             sprite: drawBGNode,
             setText: function(text){label.setString(text);},
+            enableTouch: function(enable){
+                if(enable){
+                    cc.eventManager.addListener(that.touchHandler(), drawBGNode);
+                }else{
+                    cc.eventManager.removeListeners(drawBGNode)
+                }
+            }
         };
     },
     ctor: function(){
@@ -61,6 +68,13 @@ var digitalClock = cc.Sprite.extend({
             this.setHour(time.getHours());
             this.setMinute(time.getMinutes());
         }
+    },
+    enableTouch: function(_enable){
+        var enable = _enable !== false;
+        this.hourBOne.enableTouch(enable);
+        this.hourBTwo.enableTouch(enable);
+        this.minuteBOne.enableTouch(enable);
+        this.minuteBTwo.enableTouch(enable);
     },
     touchHandler: function() {
         var that = this;

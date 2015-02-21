@@ -6,7 +6,13 @@ var analogClock = cc.Sprite.extend({
         sprite.updateTimeOnAngle = function(angle){
             that.setMinute(timeConverter.degToMinutes(angle));
         };
-        cc.eventManager.addListener(this.touchHandler(), sprite);
+        sprite.enableTouch = function(enable){
+            if(enable){
+                cc.eventManager.addListener(that.touchHandler(), sprite);
+            }else{
+                cc.eventManager.removeListeners(sprite)
+            }
+        }
         this.minuteTick = sprite;
         return sprite;
     },
@@ -17,7 +23,13 @@ var analogClock = cc.Sprite.extend({
         sprite.updateTimeOnAngle = function(angle){
             that.setHour(timeConverter.degToHours(angle));
         };
-        cc.eventManager.addListener(this.touchHandler(), sprite);
+        sprite.enableTouch = function(enable){
+            if(enable){
+                cc.eventManager.addListener(that.touchHandler(), sprite);
+            }else{
+                cc.eventManager.removeListeners(sprite)
+            }
+        }
         this.hourTick = sprite;
         return sprite;
     },
@@ -49,6 +61,11 @@ var analogClock = cc.Sprite.extend({
             this.setHour(time.getHours());
             this.setMinute(time.getMinutes());
         }
+    },
+    enableTouch: function(_enable){
+        var enable = _enable !== false;
+        this.hourTick.enableTouch(enable);
+        this.minuteTick.enableTouch(enable);
     },
     touchHandler: function(){
         var that = this;
