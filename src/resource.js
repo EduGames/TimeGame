@@ -4,7 +4,8 @@ var res = {
     CloseSelected_png : "res/CloseSelected.png",
     clock: "res/analog_clock_frame.png",
     minuteTick: "res/minute.png",
-    hourTick: "res/hour.png"
+    hourTick: "res/hour.png",
+    analogClockIcon: "res/analogClockIcon.png"
 };
 
 var g_resources = [];

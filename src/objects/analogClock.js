@@ -45,22 +45,34 @@ var analogClock = cc.Sprite.extend({
         
         this.addChild(this.minuteTickCreate(), 1);
         this.addChild(this.hourTickCreate(), 1);
+        this.setContentSize(cc.size(450,450));
+        this.setAnchorPoint(cc.p(0,0));
     },
-    setHour: function(hour){
+    setHour: function(hour, _animate){
         this.hour = hour;
-        this.hourTick.setRotation(timeConverter.hoursToDeg(hour));
+        if(_animate === true){
+            var rotateTo = cc.rotateTo(0.2, timeConverter.hoursToDeg(hour))
+            this.hourTick.runAction(rotateTo);
+        }else{
+            this.hourTick.setRotation(timeConverter.hoursToDeg(hour));
+        }
     },
-    setMinute: function(minute){
+    setMinute: function(minute, _animate){
         this.minute = minute;
-        this.minuteTick.setRotation(timeConverter.minutesToDeg(minute));
+        if(_animate === true){
+            var rotateTo = cc.rotateTo(0.2, timeConverter.minutesToDeg(minute))
+            this.minuteTick.runAction(rotateTo)
+        }else{
+            this.minuteTick.setRotation(timeConverter.minutesToDeg(minute));
+        }
     },
-    setTime: function(time){
+    setTime: function(time, animate){
         if(typeof time === "string"){
-            this.setHour(time.split(":")[0]);
-            this.setMinute(time.split(":")[1]);
+            this.setHour(time.split(":")[0], animate);
+            this.setMinute(time.split(":")[1], animate);
         }else if(Object.prototype.toString.call(time) === '[object Date]'){
-            this.setHour(time.getHours());
-            this.setMinute(time.getMinutes());
+            this.setHour(time.getHours(), animate);
+            this.setMinute(time.getMinutes(), animate);
         }
     },
     enableTouch: function(_enable){

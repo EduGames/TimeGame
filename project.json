@@ -14,6 +14,7 @@
         "src/resource.js",
         "src/app.js",
         "src/scenes/mainScene.js",
+        "src/scenes/setAnalogGame.js",
         "src/objects/analogClock.js",
         "src/objects/digitalClock.js",
         "src/helpers/timeConverter.js",
