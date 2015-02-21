@@ -1,22 +1,24 @@
 var analogClock = cc.Sprite.extend({
-    minuteTickCreate: function(that){
+    minuteTickCreate: function(){
+        var that = this;
         var sprite = cc.Sprite.create(res.minuteTick);
         sprite.setAnchorPoint(new cc.Point(0.5,0));
         sprite.updateTimeOnAngle = function(angle){
             that.setMinute(timeConverter.degToMinutes(angle));
-        }
+        };
         cc.eventManager.addListener(this.touchHandler(), sprite);
-        that.minuteTick = sprite;
+        this.minuteTick = sprite;
         return sprite;
     },
-    hourTickCreate: function(that){
+    hourTickCreate: function(){
+        var that = this;
         var sprite = cc.Sprite.create(res.hourTick);
         sprite.setAnchorPoint(new cc.Point(0.5,0));
         sprite.updateTimeOnAngle = function(angle){
             that.setHour(timeConverter.degToHours(angle));
-        }
+        };
         cc.eventManager.addListener(this.touchHandler(), sprite);
-        that.hourTick = sprite
+        this.hourTick = sprite;
         return sprite;
     },
     hour: null,
@@ -28,8 +30,8 @@ var analogClock = cc.Sprite.extend({
         var clockFrame = cc.Sprite.create(res.clock);
         this.addChild(clockFrame, 0);
         
-        this.addChild(this.minuteTickCreate(this), 0);
-        this.addChild(this.hourTickCreate(this), 0);
+        this.addChild(this.minuteTickCreate(), 1);
+        this.addChild(this.hourTickCreate(), 1);
     },
     setHour: function(hour){
         this.hour = hour;

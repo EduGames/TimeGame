@@ -15,6 +15,7 @@
         "src/app.js",
         "src/scenes/mainScene.js",
         "src/objects/analogClock.js",
+        "src/objects/digitalClock.js",
         "src/helpers/timeConverter.js",
         "src/helpers/point.js"
     ]

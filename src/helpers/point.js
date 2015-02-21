@@ -1,5 +1,7 @@
-var mm = {
-    Point: {
+
+var mm = mm || {};
+
+mm.Point =  {
         diff: function(to, from){
             return {x:from.x - to.x, y:from.y -to.y};
         },
@@ -12,5 +14,5 @@ var mm = {
             if ( angle < 0 ) angle += 360;
             return angle;
         }
-    }
-};
+    };
+

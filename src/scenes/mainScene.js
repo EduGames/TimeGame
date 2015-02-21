@@ -16,6 +16,13 @@ var mainLayer = cc.Layer.extend({
         clock.setTime(new Date());
         this.addChild(clock);
         
+        var clockD = new digitalClock();
+        clockD.x = size.width/2
+        clockD.y = size.height/4
+        
+        clockD.setTime(new Date());
+        this.addChild(clockD);
+        
         return true;
     }
 });
