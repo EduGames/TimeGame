@@ -25,7 +25,7 @@ var digitalClock = cc.Sprite.extend({
                 if(enable){
                     cc.eventManager.addListener(that.touchHandler(), drawBGNode);
                 }else{
-                    cc.eventManager.removeListeners(drawBGNode)
+                    cc.eventManager.removeListeners(drawBGNode);
                 }
             }
         };

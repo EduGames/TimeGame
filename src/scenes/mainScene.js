@@ -9,21 +9,25 @@ var mainLayer = cc.Layer.extend({
         var size = cc.winSize;
         
         var clock = new analogClock();
-        clock.x = size.width/2
-        clock.y = size.height/2
-        clock.scale = 0.5
-        
+        clock.x = size.width/2;
+        clock.y = size.height/2;
+        clock.scale = 0.5;
+        clock.addObserver(this);
+        clock.enableTouch();
         clock.setTime(new Date());
         this.addChild(clock);
         
         var clockD = new digitalClock();
-        clockD.x = size.width/2
-        clockD.y = size.height/4
+        clockD.x = size.width/2;
+        clockD.y = size.height/4;
         
         clockD.setTime(new Date());
         this.addChild(clockD);
         
         return true;
+    },
+    onClockChanged: function(msg, clock){
+        console.log(msg);
     }
 });
 

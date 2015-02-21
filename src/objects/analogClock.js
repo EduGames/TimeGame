@@ -1,4 +1,5 @@
 var analogClock = cc.Sprite.extend({
+    observers: [],
     minuteTickCreate: function(){
         var that = this;
         var sprite = cc.Sprite.create(res.minuteTick);
@@ -10,9 +11,9 @@ var analogClock = cc.Sprite.extend({
             if(enable){
                 cc.eventManager.addListener(that.touchHandler(), sprite);
             }else{
-                cc.eventManager.removeListeners(sprite)
+                cc.eventManager.removeListeners(sprite);
             }
-        }
+        };
         this.minuteTick = sprite;
         return sprite;
     },
@@ -27,9 +28,9 @@ var analogClock = cc.Sprite.extend({
             if(enable){
                 cc.eventManager.addListener(that.touchHandler(), sprite);
             }else{
-                cc.eventManager.removeListeners(sprite)
+                cc.eventManager.removeListeners(sprite);
             }
-        }
+        };
         this.hourTick = sprite;
         return sprite;
     },
@@ -72,6 +73,7 @@ var analogClock = cc.Sprite.extend({
         var clicked = false;
         return cc.EventListener.create({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            swallowTouches: true,
             onTouchBegan: function (touch, event) {
                 // event.getCurrentTarget() returns the *listener's* sceneGraphPriority node.
                 var target = event.getCurrentTarget();
@@ -96,7 +98,21 @@ var analogClock = cc.Sprite.extend({
                 var angle = mm.Point.angle(arrow);
                
                 target.updateTimeOnAngle(angle);
+            },
+            onTouchEnded: function(touch, event) {
+                if(!clicked) return;
+                that.broadCast(that.hour + ":" + that.minute)
             }
         });
+    },
+    addObserver: function(o){
+        this.observers.push(o);
+    },
+    broadCast: function(msg){
+        var o;
+        for (var i = 0; i < this.observers.length; i++){
+            o = this.observers[i]
+            if(o.onClockChanged) o.onClockChanged(msg, this);
+        }
     }
 });
