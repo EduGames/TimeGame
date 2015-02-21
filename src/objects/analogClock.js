@@ -2,8 +2,8 @@ var analogClock = cc.Sprite.extend({
     observers: [],
     minuteTickCreate: function(){
         var that = this;
-        var sprite = cc.Sprite.create(res.minuteTick);
-        sprite.setAnchorPoint(new cc.Point(0.5,0));
+        var sprite = cc.Sprite.create(res.minuteTick_main);
+        sprite.setAnchorPoint(new cc.Point(0.5,0.25));
         sprite.updateTimeOnAngle = function(angle){
             that.setMinute(timeConverter.degToMinutes(angle));
         };
@@ -19,8 +19,8 @@ var analogClock = cc.Sprite.extend({
     },
     hourTickCreate: function(){
         var that = this;
-        var sprite = cc.Sprite.create(res.hourTick);
-        sprite.setAnchorPoint(new cc.Point(0.5,0));
+        var sprite = cc.Sprite.create(res.hourTick_main);
+        sprite.setAnchorPoint(new cc.Point(0.5,0.25));
         sprite.updateTimeOnAngle = function(angle){
             that.setHour(timeConverter.degToHours(angle));
         };
@@ -40,7 +40,7 @@ var analogClock = cc.Sprite.extend({
     minuteTick: null,
     ctor: function(){
         this._super();
-        var clockFrame = cc.Sprite.create(res.clock);
+        var clockFrame = cc.Sprite.create(res.clock_main);
         this.addChild(clockFrame, 0);
         
         this.addChild(this.minuteTickCreate(), 1);

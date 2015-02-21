@@ -23,18 +23,41 @@ var setAnalogGameLayer = cc.Layer.extend({
 
         var size = cc.winSize;
         
+        var bg = new cc.Sprite.create(res.bg_analogGame);
+        bg.x = size.width/2;
+        bg.y = size.height/2;
+        this.addChild(bg, -10);
+        
         this.clockA = new analogClock();
-        this.clockA.x = size.width/2;
-        this.clockA.y = size.height/2;
-        this.clockA.scale = 0.5;
+        this.clockA.x = 610;
+        this.clockA.y = 300;
+        this.clockA.scale = 0.9;
         this.clockA.addObserver(this);
         this.clockA.enableTouch();
         this.addChild(this.clockA);
         
         this.clockD = new digitalClock();
-        this.clockD.x = size.width/2;
-        this.clockD.y = size.height/4;
+        this.clockD.x = 125;
+        this.clockD.y = 420;
         this.addChild(this.clockD);
+        
+        var backBtn = new cc.MenuItemImage(
+            res.back_btn,
+            res.back_btn,
+            function () {
+                cc.director.runScene(new mainScene());
+            }, this);
+        backBtn.attr({
+            x: 40 ,
+            y: 560,
+            anchor2: 0.5,
+            anchorY: 0.5
+        });
+
+        var menu = new cc.Menu(backBtn);
+        menu.x = 0;
+        menu.y = 0;
+        this.addChild(menu, 1);
         
         this.resetLevel();
         
