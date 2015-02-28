@@ -10,5 +10,11 @@ var timeConverter = {
     },
     degToMinutes: function(degs){
         return Math.floor(degs / 6);
+    },
+    secondsToDeg: function(seconds){
+        return seconds * 6;
+    },
+    degToSeconds: function(degs){
+        return Math.floor(degs / 6);
     }
-}
+};

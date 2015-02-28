@@ -34,6 +34,7 @@ var setAnalogGameLayer = cc.Layer.extend({
         this.clockA.scale = 0.9;
         this.clockA.addObserver(this);
         this.clockA.enableTouch();
+        this.clockA.disableSeconds();
         this.addChild(this.clockA);
         
         this.clockD = new digitalClock();

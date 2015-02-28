@@ -34,19 +34,35 @@ var analogClock = cc.Sprite.extend({
         this.hourTick = sprite;
         return sprite;
     },
+    secondTickCreate: function(){
+        var that = this;
+        var sprite = cc.Sprite.create(res.secondTick_main);
+        sprite.setAnchorPoint(new cc.Point(0.5,0.25));
+        sprite.updateTimeOnAngle = function(angle){
+            that.setSecond(timeConverter.degToSeconds(angle));
+        };
+        this.secondTick = sprite;
+        return sprite;
+    },
     hour: null,
     minute: null,
+    second: null,
     hourTick: null,
     minuteTick: null,
+    secondTick: null,
     ctor: function(){
         this._super();
         var clockFrame = cc.Sprite.create(res.clock_main);
         this.addChild(clockFrame, 0);
         
+        this.addChild(this.secondTickCreate(), 1);
         this.addChild(this.minuteTickCreate(), 1);
         this.addChild(this.hourTickCreate(), 1);
         this.setContentSize(cc.size(450,450));
         this.setAnchorPoint(cc.p(0,0));
+    },
+    disableSeconds: function(){
+        this.secondTick.setVisible(false);
     },
     setHour: function(hour, _animate){
         this.hour = hour;
@@ -66,13 +82,24 @@ var analogClock = cc.Sprite.extend({
             this.minuteTick.setRotation(timeConverter.minutesToDeg(minute));
         }
     },
+    setSecond: function(second, _animate){
+        this.second = second;
+        if(_animate === true){
+            var rotateTo = cc.rotateTo(0.2, timeConverter.secondsToDeg(second))
+            this.secondTick.runAction(rotateTo)
+        }else{
+            this.secondTick.setRotation(timeConverter.secondsToDeg(second));
+        }
+    },
     setTime: function(time, animate){
         if(typeof time === "string"){
             this.setHour(time.split(":")[0], animate);
             this.setMinute(time.split(":")[1], animate);
+            this.setSecond(0, animate);
         }else if(Object.prototype.toString.call(time) === '[object Date]'){
             this.setHour(time.getHours(), animate);
             this.setMinute(time.getMinutes(), animate);
+            this.setSecond(time.getSeconds(), animate);
         }
     },
     enableTouch: function(_enable){

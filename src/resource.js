@@ -9,6 +9,7 @@ var res = {
     clock_main: "res/analog_clock_frame_1.png",
     minuteTick: "res/minute.png",
     hourTick: "res/hour.png",
+    secondTick_main: "res/second_tick_1.png",
     minuteTick_main: "res/minute_tick_1.png",
     hourTick_main: "res/hour_tick_1.png",
     analogClockIcon: "res/analogClockIcon.png"
