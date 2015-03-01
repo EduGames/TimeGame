@@ -1,5 +1,6 @@
 var res = {
     bg: "res/intro_background.jpg",
+    star: "res/star.png",
     bg_analogGame: "res/bg_analogGame.jpg",
     back_btn: "res/back_btn.png",
     HelloWorld_png : "res/HelloWorld.png",
